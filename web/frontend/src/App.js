@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import angelimage from './20190424_194443.jpg';
 import headerimage from './initial.png';
-import ImageUpload from './uploadimage.js'
+//import ImageUpload from './uploadimage.js'
 import './App.css';
 
 class App extends Component {
@@ -33,11 +33,9 @@ class App extends Component {
           <h2>First Model Trained-Masking car</h2>
           <h3>Please upload your favourite car</h3>
 
-          h3 React Image Preview & Upload Component          
-          div#mainApp
-          div.centerText
-          span Checkout associated 
-          a(href="http://www.hartzis.me/react-image-upload/" target="_blank") blog post
+          <div Name="mainMaskImage">
+          </div>
+          
 
         </div>  
             

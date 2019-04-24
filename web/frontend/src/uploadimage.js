@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import './App.css';
 
 class ImageUpload extends React.Component {
   constructor(props) {
@@ -56,4 +57,4 @@ class ImageUpload extends React.Component {
   }
 }
   
-ReactDOM.render(<ImageUpload/>, document.getElementById("mainApp"));
+ReactDOM.render(<ImageUpload/>, document.getElementById("mainMaskImage"));
