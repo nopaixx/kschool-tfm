@@ -5,7 +5,7 @@ import './App.css';
 class ImageUpload extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {file: '',imagePreviewUrl: ''};
+    this.state = {file: '',imagePreviewUrl: '',finishedPhoto:''};
   }
 
   _handleSubmit(e) {
@@ -30,14 +30,26 @@ class ImageUpload extends React.Component {
     reader.readAsDataURL(file)
   }
 
+  _handleConver = () => {
+    this.setState({finishedPhoto: true})
+  }
+
   render() {
-    let {imagePreviewUrl} = this.state;
+    let {imagePreviewUrl, finishedPhoto} = this.state;
     let $imagePreview = null;
+    let newPhoto = null;
     if (imagePreviewUrl) {
-      $imagePreview = (<img src={imagePreviewUrl} />);
+      $imagePreview = (<img className={'imagen1'} src={imagePreviewUrl} />);
     } else {
       $imagePreview = (<div className="previewText">Please select an Image for Preview</div>);
     }
+    if(finishedPhoto) {
+      newPhoto = (<img className={'imagen1'} src={''} />);
+    }else {
+      newPhoto = (<div className="previewText">No Result yet</div>);
+    }
+
+    console.log(imagePreviewUrl)
 
     return (
       <div className="previewComponent">
@@ -49,12 +61,20 @@ class ImageUpload extends React.Component {
             type="submit" 
             onClick={(e)=>this._handleSubmit(e)}>Upload Image</button>
         </form>
-        <div className="imgPreview">
-          {$imagePreview}
+        <div className = {'imagenesDiv'}>
+          <div className="imgPreview">
+            {$imagePreview}
+          </div>
+          <button  onClick={(e)=>this._handleConver(e)}>
+            hola
+          </button>
+          <div className="imgPreview">
+            {newPhoto}
+          </div>
         </div>
       </div>
     )
   }
 }
   
-ReactDOM.render(<ImageUpload/>, document.getElementById("mainMaskImage"));
+export default ImageUpload;

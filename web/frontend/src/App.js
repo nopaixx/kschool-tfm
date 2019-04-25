@@ -4,6 +4,7 @@ import angelimage from './20190424_194443.jpg';
 import headerimage from './initial.png';
 //import ImageUpload from './uploadimage.js'
 import './App.css';
+import ImageUpload from './uploadimage';
 
 class App extends Component {
   render() {
@@ -33,8 +34,7 @@ class App extends Component {
           <h2>First Model Trained-Masking car</h2>
           <h3>Please upload your favourite car</h3>
 
-          <div Name="mainMaskImage">
-          </div>
+          <ImageUpload />
           
 
         </div>  
