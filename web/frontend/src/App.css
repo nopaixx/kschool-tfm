@@ -29,13 +29,22 @@ body {
 .App-intro {
   font-size: large;
 }
-
 .App-mask {
   font-size: large;
   background-color:#afafb7;
   padding: 20px;
 }
 
+.App-mask-2 {
+  font-size: large;
+  background-color:#afafb7;
+  padding: 20px;
+}
+.App-apply-mask {
+  font-size: large;
+  background-color:#aaaa;
+  padding: 20px;
+}
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }

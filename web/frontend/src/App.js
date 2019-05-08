@@ -12,7 +12,7 @@ class App extends Component {
       <div className="App">
         <div className="App-header">
           <img src={headerimage} className="App-header2" alt="logo" />
-          <h2>Welcome to Final TFM Datascience</h2>
+          <h2>CarDrawing brushtool using DeepLearning</h2>
         </div>
         <p className="App-intro">
           <img src={angelimage} className="App-angel_image" alt="angel image" />
@@ -31,13 +31,14 @@ class App extends Component {
           LinkedIn: https://www.linkedin.com/in/angel-lordan-3b854616b/
         </p>
         <div className="App-mask">
-          <h2>First Model Trained-Masking car</h2>
+          <h2>UNET-mask car extraction</h2>
           <h3>Please upload your favourite car</h3>
 
           <ImageUpload />
           
 
         </div>  
+
             
       </div>
     );
