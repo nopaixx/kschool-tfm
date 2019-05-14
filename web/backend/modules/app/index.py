@@ -19,9 +19,9 @@ def convert_and_save(b64_string, image_name):
 
 @app.route('/')
 def hello_world():
-    return 'Hello, World!'
+    return 'done' 
 
-@app.route('/extract_mask', methods=['GET', 'POST']):
+@app.route('/extract_mask', methods=['GET', 'POST'])
 def get_model_unet():
     """
     This endpoint return first model prediction car MASKING
@@ -41,7 +41,7 @@ def get_model_unet():
     # 
     return 'Unet Model'
 
-@app.route('/apply_mask_to_image'):
+@app.route('/apply_mask_to_image')
 def apply_mask_to_image():
     """
     Input:
@@ -52,7 +52,7 @@ def apply_mask_to_image():
     """
     return "apply mask to image"
 
-@app.route('/extract_edges'):
+@app.route('/extract_edges')
 def get_extract_edges():
     """This endpoint return edge from image
     Input:
@@ -63,12 +63,12 @@ def get_extract_edges():
 
     return 'Extract edges'
 
-@app.route('/'):
+@app.route('/final_model')
 def get_apply_final_model():
     """
     Final endpit
     """
-
+    return 'final_model'
     
 
 
