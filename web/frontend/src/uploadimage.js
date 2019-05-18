@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import './App.css';
-
+import {
+	MASK_ENDPOINT
+	} from './config.js'
 class ImageUpload extends React.Component {
   constructor(props) {
     super(props);
@@ -11,7 +13,7 @@ class ImageUpload extends React.Component {
   _handleSubmit(e) {
     e.preventDefault();
     // TODO: do something with -> this.state.file
-    console.log('handle uploading-', this.state.file);
+	  //    console.log('handle uploading-', this.state.file);
   }
 
 
@@ -32,7 +34,22 @@ class ImageUpload extends React.Component {
   }
 
   _handleConver = () => {
-    this.setState({finishedPhoto: true})
+	let {imagePreviewUrl} = this.state;
+	 //let url = MASK_ENDPOINT+"?data="+imagePreviewUrl
+
+	 let url = "http://127.0.0.1:4000/extract_mask?data="+imagePreviewUrl
+	  console.log("URL",url)
+	fetch(url)
+	.then(results => {
+		return results
+	}).then(data=>{
+	
+	  console.log("-hola-",data);
+          this.setState({finishedPhoto: true, maskPhoto: data})
+	})
+
+//    this.setState({finishedPhoto: true, maskPhoto: response.data
+	  console.log("hola");
   }
   _handleSubmit_applymask = () => {
     
@@ -42,7 +59,8 @@ class ImageUpload extends React.Component {
   }
 
   render() {
-    let {imagePreviewUrl, finishedPhoto, finishedMask} = this.state;
+    let {imagePreviewUrl, finishedPhoto, maskPhoto, finishedMask} = this.state;
+	  console.log('-angel-', maskPhoto)
     let $imagePreview = null;
     let newPhoto = null;
     let applyMaskPhoto = null;
@@ -52,7 +70,7 @@ class ImageUpload extends React.Component {
       $imagePreview = (<div className="previewText">Please select an Image for Preview</div>);
     }
     if(finishedPhoto) {
-      newPhoto = (<img className={'imagen1'} src={''} />);
+      newPhoto = (<img className={'imagen1'} src={maskPhoto} />);
     }else {
       newPhoto = (<div className="previewText">No Result yet</div>);
     }
@@ -62,7 +80,7 @@ class ImageUpload extends React.Component {
       applyMaskPhoto = (<div className="previewText">No Result yet</div>);
     }
 
-    console.log(imagePreviewUrl)
+	  //    console.log(imagePreviewUrl)
 
     return (
       <div>

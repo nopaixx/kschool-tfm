@@ -1,21 +1,40 @@
-''' flask app with mongo '''
+from __future__ import print_function
 import os
 import json
 import datetime
+import sys
+import base64
 from flask import Flask
 from flask import request
 from keras.models import Model, load_model
-
+from PIL import Image
+from base64 import decodestring
 
 # create the flask object
 app = Flask(__name__)
 
 first_unet_model = None
 
+def convert_and_save2(b64_string, image_name):
+
+    b64_string += '=' * (-len(b64_string) % 4)  # restore stripped '='s
+
+    string = b'{b64_string}'
+
+    with open(image_name, "wb") as fh:
+        fh.write(base64.b64decode(b64_string.encode()))
+
+def convert_and_save3(b64_string, image_name):
+    b64_string += '=' * (-len(b64_string) % 4)  # restore stripped '='s
+    image = Image.fromstring('RGB',(256, 256),base64.b64decode(b64_string.encode()))
+    image.save(image_name)
 
 def convert_and_save(b64_string, image_name):
-    with open(image_name, "wb") as fh:
-        fh.write(base64.decodebytes(b64_string.encode()))
+    b64_string += '=' * (-len(b64_string) % 4)  # restore stripped '='s
+    image = Image.fromstring('RGB',(256, 256),base64.b64decode(b64_string.encode()))
+    image.save(image_name)
+    # with open(image_name, "wb") as fh:
+    #     fh.write(decodebytes(b64_string.encode()))
 
 @app.route('/')
 def hello_world():
@@ -30,11 +49,18 @@ def get_model_unet():
     Output
         - Return a first model prediction images
     """
+    _, image_b64 = request.args.get('data').split(';')
+    print("--->", _ , file=sys.stderr)
+    print("--->",image_b64, file=sys.stderr)
+    # image_b64 += "=" * ((4 - len(image_b64) % 4) % 4) #ugh
+    # image_b64 = request.data
 
-    data = request.get_json()
-    img_data = data['img']
+    print(image_b64, file=sys.stderr)
+    convert_and_save(image_b64, '/tmp/image2.png')
+#   data = request.get_json()
+#    img_data = data['img']
     # this method convert and save the base64 string to image
-    convert_and_save(img_data,image_name)
+#    convert_and_save(img_data,image_name)
     
     # once we have on file then we can opened
     # load image in memory

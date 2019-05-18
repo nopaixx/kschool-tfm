@@ -5,3 +5,4 @@ keras
 numpy
 pandas
 matplotlib
+Pillow==2.2.1
