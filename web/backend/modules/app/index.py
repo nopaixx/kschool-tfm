@@ -9,11 +9,56 @@ from flask import request
 from keras.models import Model, load_model
 from PIL import Image
 from base64 import decodestring
+import base64
+import re
+import os
+from io import BytesIO
+import time
+from PIL import ImageFile
+import cv2
+import numpy as np
+
 
 # create the flask object
 app = Flask(__name__)
 
 first_unet_model = None
+image_path='/tmp/'
+ImageFile.LOAD_TRUNCATED_IMAGES = True
+def convert_and_save5(b64_string, image_name):  
+    _, data=b64_string.split(',')
+    # data += '=' * (-len(data) % 4)  # restore stripped '='s
+    data = data.replace(' ','').replace('\n','').replace('\r','').strip()
+    data += '=' * (-len(data) % 4)  # restore stripped '='s
+    imgdata = base64.b64decode(data)
+    with open(image_name, 'wb') as f:
+        f.write(imgdata)
+
+def convert_and_save4(b64_string, image_name):
+#    def getI420FromBase64(codec, image_path=""):
+    # get codec from http
+    # codec = codec.encode()
+
+#    b64_string += '=' * (-len(b64_string) % 4)  # restore stripped '='s
+   # data = re.sub('^data:image/.+;base64,', '', b64_string)
+    _,data=b64_string.split(',')
+    print("AAAAA--->", _, file=sys.stderr)
+ #   data = data.replace(' ','').replace('\n','').replace('\r','').strip()
+    data += '=' * (-len(data) % 4)  # restore stripped '='s
+#    byte_data = base64.encodestring(data)
+    im = Image.open(BytesIO(base64.b64decode(data)))
+    #print("AAAAA--->", data, file=sys.stderr)
+ #   image_data = BytesIO(byte_data)
+    #img = Image.open(image_data)
+    #t = time.time()
+    # t = 'image'
+    # img.save(image_path + str(t) + '.png', "PNG")
+    im.save('/tmp/image.png', "PNG")
+#    nparr = np.fromstring(data.decode('base64'), np.uint8)
+#    img = cv2.imdecode(nparr, cv2.IMREAD_ANYCOLOR)
+#    cv2.imwrite('/tmp/image.png', img)
+
+
 
 def convert_and_save2(b64_string, image_name):
 
@@ -31,7 +76,7 @@ def convert_and_save3(b64_string, image_name):
 
 def convert_and_save(b64_string, image_name):
     b64_string += '=' * (-len(b64_string) % 4)  # restore stripped '='s
-    image = Image.fromstring('RGB',(256, 256),base64.b64decode(b64_string.encode()))
+    image = Image.fromstring('RGB',base64.b64decode(b64_string.encode()))
     image.save(image_name)
     # with open(image_name, "wb") as fh:
     #     fh.write(decodebytes(b64_string.encode()))
@@ -49,14 +94,14 @@ def get_model_unet():
     Output
         - Return a first model prediction images
     """
-    _, image_b64 = request.args.get('data').split(';')
-    print("--->", _ , file=sys.stderr)
-    print("--->",image_b64, file=sys.stderr)
+    image_b64 = request.args.get('data')
+    print("--->", "AAAAA" , file=sys.stderr)
+   # print("--->",image_b64[0:100], file=sys.stderr)
     # image_b64 += "=" * ((4 - len(image_b64) % 4) % 4) #ugh
     # image_b64 = request.data
 
-    print(image_b64, file=sys.stderr)
-    convert_and_save(image_b64, '/tmp/image2.png')
+#    print(image_b64, file=sys.stderr)
+    convert_and_save5(image_b64, '/tmp/image1.png')
 #   data = request.get_json()
 #    img_data = data['img']
     # this method convert and save the base64 string to image
