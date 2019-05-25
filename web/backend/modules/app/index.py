@@ -8,6 +8,7 @@ from flask import Flask
 from flask import request
 from keras.models import Model, load_model
 from PIL import Image
+from flask_cors import CORS
 from base64 import decodestring
 import base64
 import re
@@ -18,68 +19,21 @@ from PIL import ImageFile
 import cv2
 import numpy as np
 
+from utils import convert_and_save4
+from utils import downsample
+from utils import to_gray_scale_image
+from utils import from_np_to_b64_image
 
+from skimage.io import imread
+import tensorflow as tf
 # create the flask object
 app = Flask(__name__)
-
+CORS(app)
+H = 256
+W = 256
 first_unet_model = None
-image_path='/tmp/'
 ImageFile.LOAD_TRUNCATED_IMAGES = True
-def convert_and_save5(b64_string, image_name):  
-    _, data=b64_string.split(',')
-    # data += '=' * (-len(data) % 4)  # restore stripped '='s
-    data = data.replace(' ','').replace('\n','').replace('\r','').strip()
-    data += '=' * (-len(data) % 4)  # restore stripped '='s
-    imgdata = base64.b64decode(data)
-    with open(image_name, 'wb') as f:
-        f.write(imgdata)
 
-def convert_and_save4(b64_string, image_name):
-#    def getI420FromBase64(codec, image_path=""):
-    # get codec from http
-    # codec = codec.encode()
-
-#    b64_string += '=' * (-len(b64_string) % 4)  # restore stripped '='s
-   # data = re.sub('^data:image/.+;base64,', '', b64_string)
-    _,data=b64_string.split(',')
-    print("AAAAA--->", _, file=sys.stderr)
- #   data = data.replace(' ','').replace('\n','').replace('\r','').strip()
-    data += '=' * (-len(data) % 4)  # restore stripped '='s
-#    byte_data = base64.encodestring(data)
-    im = Image.open(BytesIO(base64.b64decode(data)))
-    #print("AAAAA--->", data, file=sys.stderr)
- #   image_data = BytesIO(byte_data)
-    #img = Image.open(image_data)
-    #t = time.time()
-    # t = 'image'
-    # img.save(image_path + str(t) + '.png', "PNG")
-    im.save('/tmp/image.png', "PNG")
-#    nparr = np.fromstring(data.decode('base64'), np.uint8)
-#    img = cv2.imdecode(nparr, cv2.IMREAD_ANYCOLOR)
-#    cv2.imwrite('/tmp/image.png', img)
-
-
-
-def convert_and_save2(b64_string, image_name):
-
-    b64_string += '=' * (-len(b64_string) % 4)  # restore stripped '='s
-
-    string = b'{b64_string}'
-
-    with open(image_name, "wb") as fh:
-        fh.write(base64.b64decode(b64_string.encode()))
-
-def convert_and_save3(b64_string, image_name):
-    b64_string += '=' * (-len(b64_string) % 4)  # restore stripped '='s
-    image = Image.fromstring('RGB',(256, 256),base64.b64decode(b64_string.encode()))
-    image.save(image_name)
-
-def convert_and_save(b64_string, image_name):
-    b64_string += '=' * (-len(b64_string) % 4)  # restore stripped '='s
-    image = Image.fromstring('RGB',base64.b64decode(b64_string.encode()))
-    image.save(image_name)
-    # with open(image_name, "wb") as fh:
-    #     fh.write(decodebytes(b64_string.encode()))
 
 @app.route('/')
 def hello_world():
@@ -95,23 +49,30 @@ def get_model_unet():
         - Return a first model prediction images
     """
     image_b64 = request.args.get('data')
-    print("--->", "AAAAA" , file=sys.stderr)
-   # print("--->",image_b64[0:100], file=sys.stderr)
-    # image_b64 += "=" * ((4 - len(image_b64) % 4) % 4) #ugh
-    # image_b64 = request.data
+    # print("--->", "AAAAA" , file=sys.stderr)
+    # 1.- convert base64 uri o png image and save to tmp folder
+    image_name =  convert_and_save4(image_b64)
 
-#    print(image_b64, file=sys.stderr)
-    convert_and_save5(image_b64, '/tmp/image1.png')
-#   data = request.get_json()
-#    img_data = data['img']
-    # this method convert and save the base64 string to image
-#    convert_and_save(img_data,image_name)
-    
-    # once we have on file then we can opened
-    # load image in memory
-    # 
-    return 'Unet Model'
+    # 2.- Load image to numpy array
+    img = imread(image_name)
+    # 3.- resize image to model specs 256x256
+    resized_image = downsample(img, H, W)
+    # 4.- convert to gray scale as model input expected
+    gray_image = to_gray_scale_image(resized_image, H, W)
+    # 4.- Predict model
+    gray_image = gray_image.reshape(H,W,1)
+    # adebug need to add to elements to avoid unkonwed isssue for now...
+    lista = []
+    lista.append(gray_image/255)
+    lista.append(gray_image/255)
+    with graph.as_default():
+        ret_img = first_unet_model.predict(np.array(lista).reshape(2,H,W,1))
 
+#    cv2.imshow('image',ret_img[0])
+    #ret = from_np_to_b64_image(ret_img[0])
+    ret = base64.b64encode(ret_img[0])
+#    print("RET-->",ret, file=sys.stderr)
+    return ret
 @app.route('/apply_mask_to_image')
 def apply_mask_to_image():
     """
@@ -142,17 +103,14 @@ def get_apply_final_model():
     return 'final_model'
     
 
-
-
-
-
-
 if __name__ == '__main__':
-    
+    global graph
+    graph = tf.get_default_graph()
     # loading first unet model
     model_file = 'app/input_models/unet-carvana-augmented.hdf5'
     first_unet_model=load_model(model_file)
-
+    print(first_unet_model.summary(), file=sys.stderr)
     app.config['DEBUG'] = 1 
+
     app.run(host='0.0.0.0', port=int(4000)) # Run the app
 

@@ -32,24 +32,39 @@ class ImageUpload extends React.Component {
 
     reader.readAsDataURL(file)
   }
+  arrayBufferToBase64(buffer) {
+     var binary = '';
+     var bytes = [].slice.call(new Uint8Array(buffer));
+
+     bytes.forEach((b) => binary += String.fromCharCode(b));
+
+     return window.btoa(binary);
+   };
 
   _handleConver = () => {
 	let {imagePreviewUrl} = this.state;
 	 //let url = MASK_ENDPOINT+"?data="+imagePreviewUrl
-
-	 let url = "http://127.0.0.1:4000/extract_mask?data="+imagePreviewUrl
-	  console.log("URL",url)
-	fetch(url)
-	.then(results => {
-		return results
-	}).then(data=>{
+	let img = encodeURIComponent(imagePreviewUrl)
+	let url = "http://127.0.0.1:4000/extract_mask?data="+img
+	fetch(url).then((response) => {
+		 var base64Flag = 'data:image/jpeg;base64,';
+		 let  body = response.text().then((text) => {
+		 var imageStr = text
+		 console.log(base64Flag + imageStr)
+                 this.setState({finishedPhoto: true, maskPhoto: base64Flag + imageStr})
+		 });
+            });
+//	fetch(url)
+//	.then(results => {
+//		console.log("-result", results)
+//		return results
+//	}).then(json=>{
 	
-	  console.log("-hola-",data);
-          this.setState({finishedPhoto: true, maskPhoto: data})
-	})
+//	  console.log("-hola-",json);
+  //       this.setState({finishedPhoto: true, maskPhoto: json})
+//	})
 
 //    this.setState({finishedPhoto: true, maskPhoto: response.data
-	  console.log("hola");
   }
   _handleSubmit_applymask = () => {
     
@@ -60,7 +75,7 @@ class ImageUpload extends React.Component {
 
   render() {
     let {imagePreviewUrl, finishedPhoto, maskPhoto, finishedMask} = this.state;
-	  console.log('-angel-', maskPhoto)
+	  console.log('-render', maskPhoto)
     let $imagePreview = null;
     let newPhoto = null;
     let applyMaskPhoto = null;
