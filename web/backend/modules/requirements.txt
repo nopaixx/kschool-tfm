@@ -1,11 +1,12 @@
-Flask==0.12.2
-requests==2.18.1
-tensorflow
-keras
+Flask
+requests
+tensorflow==1.13.1
+keras==2.2.4
 numpy
 pandas
 matplotlib
-Pillow==2.2.1
+Pillow
 opencv-python
 scikit-image
 flask-cors
+pypng

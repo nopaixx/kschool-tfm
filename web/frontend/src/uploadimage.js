@@ -32,14 +32,6 @@ class ImageUpload extends React.Component {
 
     reader.readAsDataURL(file)
   }
-  arrayBufferToBase64(buffer) {
-     var binary = '';
-     var bytes = [].slice.call(new Uint8Array(buffer));
-
-     bytes.forEach((b) => binary += String.fromCharCode(b));
-
-     return window.btoa(binary);
-   };
 
   _handleConver = () => {
 	let {imagePreviewUrl} = this.state;
@@ -54,31 +46,45 @@ class ImageUpload extends React.Component {
                  this.setState({finishedPhoto: true, maskPhoto: base64Flag + imageStr})
 		 });
             });
-//	fetch(url)
-//	.then(results => {
-//		console.log("-result", results)
-//		return results
-//	}).then(json=>{
-	
-//	  console.log("-hola-",json);
-  //       this.setState({finishedPhoto: true, maskPhoto: json})
-//	})
-
-//    this.setState({finishedPhoto: true, maskPhoto: response.data
   }
   _handleSubmit_applymask = () => {
     
     // TODO: do something with -> this.state.file
-    
-    this.setState({finishedMask: true})
+        let {imagePreviewUrl, maskPhoto} = this.state;
+	let img_orig = encodeURIComponent(imagePreviewUrl)
+	let img_mask = encodeURIComponent(maskPhoto)
+	let url = "http://127.0.0.1:4000/apply_mask?orig="+img_orig+"&mask="+img_mask
+	fetch(url).then((response) => {
+		 var base64Flag = 'data:image/jpeg;base64,';
+		 let  body = response.text().then((text) => {
+		 var imageStr = text
+		 console.log(base64Flag + imageStr)
+                 this.setState({finishedMask: true, extractPhoto: base64Flag + imageStr})
+		 });
+            });
+  }
+  _handleSubmit_extractedges = () => {
+
+    // TODO: do something with -> this.state.file
+        let {extractPhoto} = this.state;
+        let img_car = encodeURIComponent(extractPhoto)
+        let url = "http://127.0.0.1:4000/extractedges?data="+img_car
+        fetch(url).then((response) => {
+                 var base64Flag = 'data:image/jpeg;base64,';
+                 let  body = response.text().then((text) => {
+                 var imageStr = text
+                 console.log(base64Flag + imageStr)
+                 this.setState({finishedEdge: true, edgeImagePhoto: base64Flag + imageStr})
+                 });
+            });
   }
 
   render() {
-    let {imagePreviewUrl, finishedPhoto, maskPhoto, finishedMask} = this.state;
-	  console.log('-render', maskPhoto)
+    let {imagePreviewUrl, finishedPhoto, maskPhoto, finishedMask, extractPhoto, finishedEdge, edgeImagePhoto} = this.state;
     let $imagePreview = null;
     let newPhoto = null;
     let applyMaskPhoto = null;
+    let edgesPhoto = null;
     if (imagePreviewUrl) {
       $imagePreview = (<img className={'imagen1'} src={imagePreviewUrl} />);
     } else {
@@ -90,12 +96,15 @@ class ImageUpload extends React.Component {
       newPhoto = (<div className="previewText">No Result yet</div>);
     }
     if(finishedMask){
-      applyMaskPhoto = (<img className={'imagen1'} src={''} />);
+      applyMaskPhoto = (<img className={'imagen1'} src={extractPhoto} />);
     }else{
       applyMaskPhoto = (<div className="previewText">No Result yet</div>);
     }
-
-	  //    console.log(imagePreviewUrl)
+    if(finishedEdge){
+      edgesPhoto = (<img className={'imagen1'} src={edgeImagePhoto} />);
+    }else{
+      edgesPhoto = (<div className="previewText">No Result yet</div>);
+    }
 
     return (
       <div>
@@ -130,6 +139,18 @@ class ImageUpload extends React.Component {
           </button>
           <div className="imgPreview">
             {applyMaskPhoto}
+          </div>
+      </div>
+      <div className="App-apply-mask">
+        <h2>Extract edges with Cv2 canyedge detection</h2>
+          <div className="imgPreview">
+            {applyMaskPhoto}
+          </div>
+          <button  onClick={(e)=>this._handleSubmit_extractedges(e)}>
+            hola-3
+          </button>
+          <div className="imgPreview">
+            {edgesPhoto}
           </div>
       </div>
       </div>
