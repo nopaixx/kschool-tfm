@@ -79,12 +79,38 @@ class ImageUpload extends React.Component {
             });
   }
 
+  _handleSubmit_cardraw = () => {
+
+    // TODO: do something with -> this.state.file
+        let {edgeImagePhoto} = this.state;
+        let img_car = encodeURIComponent(edgeImagePhoto)
+        let url = "http://127.0.0.1:4000/cardraw?data="+img_car
+        fetch(url).then((response) => {
+                 var base64Flag = 'data:image/jpeg;base64,';
+                 let  body = response.text().then((text) => {
+                 var imageStr = text
+                 console.log(base64Flag + imageStr)
+                 this.setState({finishedCar: true, finalcarImagePhoto: base64Flag + imageStr})
+                 });
+            });
+  }
   render() {
-    let {imagePreviewUrl, finishedPhoto, maskPhoto, finishedMask, extractPhoto, finishedEdge, edgeImagePhoto} = this.state;
+    let {imagePreviewUrl,
+	 finishedPhoto, 
+	 maskPhoto,
+	 finishedMask, 
+	 extractPhoto,
+	 finishedEdge,
+	 edgeImagePhoto,
+         finishedCar,
+         finalcarImagePhoto} = this.state;
+
     let $imagePreview = null;
     let newPhoto = null;
     let applyMaskPhoto = null;
     let edgesPhoto = null;
+    let finalcarPhoto = null;
+
     if (imagePreviewUrl) {
       $imagePreview = (<img className={'imagen1'} src={imagePreviewUrl} />);
     } else {
@@ -105,7 +131,11 @@ class ImageUpload extends React.Component {
     }else{
       edgesPhoto = (<div className="previewText">No Result yet</div>);
     }
-
+    if(finishedCar){
+      finalcarPhoto = (<img className={'imagen1'} src={finalcarImagePhoto} />);
+    }else{
+      finalcarPhoto = (<div className="previewText">No Result yet</div>);
+    }
     return (
       <div>
       <div className="previewComponent">
@@ -153,6 +183,19 @@ class ImageUpload extends React.Component {
             {edgesPhoto}
           </div>
       </div>
+       <div className="App-apply-mask">
+        <h2>DRAW CAR!</h2>
+          <div className="imgPreview">
+            {edgesPhoto}
+          </div>
+          <button  onClick={(e)=>this._handleSubmit_cardraw(e)}>
+            hola-4
+          </button>
+          <div className="imgPreview">
+            {finalcarPhoto}
+          </div>
+      </div>
+
       </div>
     )
   }
