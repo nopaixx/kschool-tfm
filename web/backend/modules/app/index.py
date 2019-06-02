@@ -27,6 +27,7 @@ from utils import save_np_array_to_image
 from utils import debug_np_to_file
 from utils import get_clean_image
 from utils import get_edge_v2
+from utils import random_colors
 
 from skimage.io import imread
 import tensorflow as tf
@@ -37,6 +38,7 @@ CORS(app)
 H = 256
 W = 256
 first_unet_model = None
+draw_unet_model = None
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
 
@@ -141,12 +143,40 @@ def get_extract_edges():
     ret = save_np_array_to_image(np_canny)
     return ret
 
-@app.route('/final_model')
+@app.route('/cardraw')
 def get_apply_final_model():
     """
     Final endpit
     """
-    return 'final_model'
+    edge_image = request.args.get('data')
+    # 1.- convert base64 to png image and save
+    print("IMAGE-->",edge_image, file=sys.stderr)
+    edge_name = convert_and_save4(edge_image)
+    print("EDGE-name-->", edge_name, file=sys.stderr)
+    # 2.- Load image as numpy
+    np_img = imread(edge_name).reshape(H,W,1)
+    print("EDGE_MAX-->", np.max(np_img), np_img.shape, file=sys.stderr)
+    img = np_img/255
+    # 3.- set random colors for colorize image
+    color_mask = random_colors()/255
+    # 4.-pred model
+    lista = []
+    lista.append(img)
+    lista.append(img)
+
+    lista_mask = []
+    lista_mask.append(color_mask)
+    lista_mask.append(color_mask)
+
+    with graph.as_default():
+        ret_img = draw_unet_model.predict([np.array(lista).reshape(2,H,W,1), np.array(lista_mask).reshape(2,H,W,3)])
+   
+    endimage = np.uint8((ret_img[1][0])*255)
+#    debug_np_to_file(endimage, '/tmp/end.jpg')
+    ret = save_np_array_to_image(endimage)
+#
+    
+    return ret
     
 
 if __name__ == '__main__':
@@ -154,8 +184,13 @@ if __name__ == '__main__':
     graph = tf.get_default_graph()
     # loading first unet model
     model_file = 'app/input_models/unet-carvana-augmented.hdf5'
+    model_draw = 'app/input_models/unet_standford_edges_to_image.hdf5'
     first_unet_model=load_model(model_file)
-    print(first_unet_model.summary(), file=sys.stderr)
+    draw_unet_model=load_model(model_draw)
+    print("MASK MODEL->", first_unet_model.summary(), file=sys.stderr)
+
+    print("DRAWMODEL->", draw_unet_model.summary(), file=sys.stderr)
+
     app.config['DEBUG'] = 1 
 
     app.run(host='0.0.0.0', port=int(4000)) # Run the app

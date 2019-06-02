@@ -14,6 +14,7 @@ from skimage.io import imread
 from skimage.transform import resize
 import scipy.misc
 import sys
+import random
 
 image_path='/tmp/'
 
@@ -115,3 +116,12 @@ def get_edge_v2(img):
     canny_blurred = cv2.GaussianBlur(dilation_canny, (3,3), 0) # Remove noise
     #invetimos la mascara queremos el blanco de fondo y el negro como dibujo del coche
     return np.invert(canny_blurred)
+
+def random_colors(H=256, W=256):
+    avg=np.zeros((H,W,3))
+    #print(img_reduct[img_reduct[:,:,0]<255,0].mean())
+    avg[...,:,0]=255
+    avg[...,:,1]=255
+    avg[...,:,2]=255
+    return avg
+
