@@ -7,8 +7,11 @@ El objetivo de este proyecto es presentar una herramienta de dibujo que mediente
 # Preparación del entorno
 
 Pre-requistio:
+
 1.-Cuenta de Kaggle
+
 2.-Descarga 3 ficheros .zip en la carpeta /downloads/
+
 
 Fichero1(2GB).-[StandordCars DataSet](https://www.kaggle.com/jutrera/stanford-car-dataset-by-classes-folder)
 
