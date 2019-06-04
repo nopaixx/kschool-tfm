@@ -11,8 +11,11 @@ Pre-requistio:
 2.-Descarga 3 ficheros .zip en la carpeta /downloads/
 
 Fichero1(2GB).-[StandordCars DataSet](https://www.kaggle.com/jutrera/stanford-car-dataset-by-classes-folder)
+
 Fichero2(22GB).-[Carvana cars Image Mask](https://www.kaggle.com/c/carvana-image-masking-challenge)
+
 Fichero3(500MB).-[Intel Image Classification](https://www.kaggle.com/puneet6060/intel-image-classification)
+
 
     git clone -b master https://github.com/nopaixx/kschool-tfm.git
 
