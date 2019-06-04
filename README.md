@@ -37,6 +37,21 @@ Fichero3(500MB).-[Intel Image Classification](https://www.kaggle.com/puneet6060/
  - **Carvana car Image Mask**.- Este dataset contiene imagenes de coches con su mascara. Este dataset se usa para entrenar un modelo previo para extraer la mascara del coche del fondo de la imagen con el objetivo de mejorar el algoritmo de Canny Edge detection
  - **Intel image classification**.- Contiene imagenes de fondos (ciudades, paisajes etc...) este dataset se usa para mejorar la augmentación de datos del primer Carvana car Image Mask
  - **StandFord cars dataset**.- Este dataset contiene mas de 15 mil imagenes de coches, este datesaet es usado en el último modelo para regenear los coches a partir de los trazos
+
+
+## Modelo 1 .- Extraer Mascara del coche
+En este primer paso se pretende entrenar un modelo capaz de de segmentar o identificar los puntos que conforman un coche en cualquier imagen.
+En el primer paso se observo que el dataset de Carvana es limitado en cuanto a variedad de coches y todas las imagenes de este dataset estan tomadas desde la misma posición y con el mismo fondo. Por lo que se ha tenido que usar augmentación agresiva de imagenes 
+Se tomo la desición de usar el dataset Intel Image Classification para fusionar un coche aleatorio con un fondo aleatorio.
+
+Pasos:
+
+ 1. Extracción de un coche mediante su mascara
+ 2. Fusionar un coche dentro de un fondo aleatorio
+
+Ejemplo1.-
+![Augmentacion](resources/augmentacion.png)
+
  
 
 ## Rename a file
