@@ -1,0 +1,13 @@
+sklearn
+Flask
+requests
+tensorflow==1.13.1
+keras==2.2.4
+numpy
+pandas
+matplotlib
+Pillow
+opencv-python
+scikit-image
+flask-cors
+pypng
