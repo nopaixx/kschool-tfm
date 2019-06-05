@@ -164,4 +164,11 @@ Este es el modelo presentado en el frontend
 
 ENJOY UPLOADING YOUR CARS!
 
-![Enjoy](resources/enjoy.png)
+![Enjoy](resources/final1.png)
+
+![Enjoy](resources/final2.png)
+
+![Enjoy](resources/final3.png)
+
+![Enjoy](resources/final4.png)
+

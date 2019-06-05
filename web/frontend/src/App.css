@@ -19,9 +19,13 @@ body {
 .App-header {
 	background-color: #222;
 	height: 390px;
-	padding: 20px;
+	padding: 2em;
 	color: white;
-	padding: 20px;
+	margin-bottom: 10px;
+}
+
+.previewComponent {
+	padding: 2em;
 }
 
 .App-intro {
@@ -29,8 +33,8 @@ body {
 }
 .App-mask {
 	font-size: large;
-	background-color: #afafb7;
-	padding: 20px;
+	background-color: #b2dbbf;
+	padding-top: 2em;
 }
 
 .App-mask-2 {
@@ -40,7 +44,7 @@ body {
 }
 .App-apply-mask {
 	font-size: large;
-	background-color: #aaaa;
+	background-color: #70c1b3;
 	padding: 20px;
 	display: flex;
 	flex-direction: column;

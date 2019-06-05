@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import './App.css';
 import { MASK_ENDPOINT } from './config.js';
 class ImageUpload extends React.Component {
@@ -193,8 +194,8 @@ class ImageUpload extends React.Component {
 							onClick={e => this._handleSubmit_extractedges(e)}>
 							hola-3
 						</button>
-						<div className="imgPreview">{edgesPhoto}</div>
 					</div>
+					<div className="imgPreview">{edgesPhoto}</div>
 				</div>
 				<div className="App-apply-mask">
 					<div>
