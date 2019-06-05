@@ -44,9 +44,11 @@ El ojetivo de este modelo es usar el Dataset de Carvana Image con el objetivo de
 
 Problematicas detectadas y puntos fuertes:
 
-	El dataset de carvana, a pesar de tener aproximadamente 4000 imagenes de train esto es solo 400 coches únicos ya que los coches se repiten desde diferente angulo y siempre con el mismo fondo, esto es son solo  4000 images incluida la augmentación de datos.
-        Estos dos echos juntos (mismo fondo y pocos modelos de coches) en las primeras versiones hizo que el modelo una vez entrenado y aplicado en cualquier coche fuera del dataset de carvana (como Standford cars) produciendo resultados muy malos.
-	La inovación en este punto llego cuando se incorpora una augmentación custom, donde se incorpora el dataset Intel Image Classification, gracias a la gran variedad de fondos disponibles en este dataset y aplicand técnicas de extracción de maskara y interpolación de una imagen encima de otra se consiguio mejorar mucho el model.
+El dataset de carvana, a pesar de tener aproximadamente 4000 imagenes de train esto es solo 400 coches únicos ya que los coches se repiten desde diferente angulo y siempre con el mismo fondo, esto es son solo  4000 images incluida la augmentación de datos.
+
+Estos dos echos juntos (mismo fondo y pocos modelos de coches) en las primeras versiones hizo que el modelo una vez entrenado y aplicado en cualquier coche fuera del dataset de carvana (como Standford cars) produciendo resultados muy malos.
+
+La inovación en este punto llego cuando se incorpora una augmentación custom, donde se incorpora el dataset Intel Image Classification, gracias a la gran variedad de fondos disponibles en este dataset y aplicand técnicas de extracción de maskara y interpolación de una imagen encima de otra se consiguio mejorar mucho el model.
 
 Pasos Para la augmentacion:
 
