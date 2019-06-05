@@ -1,96 +1,107 @@
 body {
-  color: rgba(0, 0, 0, 0.849);
+	color: rgba(0, 0, 0, 0.849);
 }
 
 .App {
-  text-align: center;
+	text-align: center;
 }
 
 .App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+	animation: App-logo-spin infinite 20s linear;
+	height: 80px;
 }
 .App-header2 {
-  
-  height: 350px;
+	height: 350px;
 }
 .App-angel_image {
-  
-  height: 180px;
+	height: 180px;
 }
 .App-header {
-  background-color: #222;
-  height: 390px;
-  padding: 20px;
-  color: white;
-  padding: 20px;
+	background-color: #222;
+	height: 390px;
+	padding: 20px;
+	color: white;
+	padding: 20px;
 }
 
 .App-intro {
-  font-size: large;
+	font-size: large;
 }
 .App-mask {
-  font-size: large;
-  background-color:#afafb7;
-  padding: 20px;
+	font-size: large;
+	background-color: #afafb7;
+	padding: 20px;
 }
 
 .App-mask-2 {
-  font-size: large;
-  background-color:#afafb7;
-  padding: 20px;
+	font-size: large;
+	background-color: #afafb7;
+	padding: 20px;
 }
 .App-apply-mask {
-  font-size: large;
-  background-color:#aaaa;
-  padding: 20px;
+	font-size: large;
+	background-color: #aaaa;
+	padding: 20px;
+	display: flex;
+	flex-direction: column;
+}
+.maskImgs {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.ButtonConvert {
+	height: 20px;
+	align-items: center;
+	display: flex;
 }
 @keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
 }
 
-
-.fileInput{
-
-  padding: 10px;
-  margin: 15px;
-  cursor: pointer;
-  background: white;
-  border-radius: 5px;
-  }
-.imgPreview{
-  text-align: center;
-  margin: 5px 15px;
-  width: 256px;
-  height: 256px;  
-  border: 1px solid black;
+.fileInput {
+	padding: 10px;
+	margin: 15px;
+	cursor: pointer;
+	background: white;
+	border-radius: 5px;
 }
-      .imagen1 {
-        width: 256px;
-        height: 256px;  
-      }
-.previewText{
-  width: 100%;
-  margin-top: 20px;
-  }
-.submitButton{
-  padding: 12px;
-  margin-left: 10px;
-  background: white;
-  border: 4px solid lightgray;
-  border-radius: 15px;
-  font-weight: 700;
-  font-size: 10pt;
-  cursor: pointer;
-  
+.imgPreview {
+	text-align: center;
+	margin: 5px 15px;
+	width: 256px;
+	height: 256px;
+	border: 1px solid black;
 }
-.centerText{
-  text-align: center;
-  width: 500px;
+.imagen1 {
+	width: 256px;
+	height: 256px;
+}
+.previewText {
+	width: 100%;
+	margin-top: 20px;
+}
+.submitButton {
+	padding: 12px;
+	margin-left: 10px;
+	background: white;
+	border: 4px solid lightgray;
+	border-radius: 15px;
+	font-weight: 700;
+	font-size: 10pt;
+	cursor: pointer;
+}
+.centerText {
+	text-align: center;
+	width: 500px;
 }
 .imagenesDiv {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }

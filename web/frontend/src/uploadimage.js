@@ -1,204 +1,219 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import './App.css';
-import {
-	MASK_ENDPOINT
-	} from './config.js'
+import { MASK_ENDPOINT } from './config.js';
 class ImageUpload extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {file: '',imagePreviewUrl: '',finishedPhoto:''};
-  }
+	constructor(props) {
+		super(props);
+		this.state = { file: '', imagePreviewUrl: '', finishedPhoto: '' };
+	}
 
-  _handleSubmit(e) {
-    e.preventDefault();
-    // TODO: do something with -> this.state.file
-	  //    console.log('handle uploading-', this.state.file);
-  }
+	_handleSubmit(e) {
+		e.preventDefault();
+		// TODO: do something with -> this.state.file
+		//    console.log('handle uploading-', this.state.file);
+	}
 
+	_handleImageChange(e) {
+		e.preventDefault();
 
-  _handleImageChange(e) {
-    e.preventDefault();
+		let reader = new FileReader();
+		let file = e.target.files[0];
 
-    let reader = new FileReader();
-    let file = e.target.files[0];
+		reader.onloadend = () => {
+			this.setState({
+				file: file,
+				imagePreviewUrl: reader.result,
+			});
+		};
 
-    reader.onloadend = () => {
-      this.setState({
-        file: file,
-        imagePreviewUrl: reader.result
-      });
-    }
+		reader.readAsDataURL(file);
+	}
 
-    reader.readAsDataURL(file)
-  }
+	_handleConver = () => {
+		let { imagePreviewUrl } = this.state;
+		//let url = MASK_ENDPOINT+"?data="+imagePreviewUrl
+		let img = encodeURIComponent(imagePreviewUrl);
+		let url = 'http://127.0.0.1:4000/extract_mask?data=' + img;
+		fetch(url).then(response => {
+			var base64Flag = 'data:image/jpeg;base64,';
+			let body = response.text().then(text => {
+				var imageStr = text;
+				console.log(base64Flag + imageStr);
+				this.setState({
+					finishedPhoto: true,
+					maskPhoto: base64Flag + imageStr,
+				});
+			});
+		});
+	};
+	_handleSubmit_applymask = () => {
+		// TODO: do something with -> this.state.file
+		let { imagePreviewUrl, maskPhoto } = this.state;
+		let img_orig = encodeURIComponent(imagePreviewUrl);
+		let img_mask = encodeURIComponent(maskPhoto);
+		let url =
+			'http://127.0.0.1:4000/apply_mask?orig=' + img_orig + '&mask=' + img_mask;
+		fetch(url).then(response => {
+			var base64Flag = 'data:image/jpeg;base64,';
+			let body = response.text().then(text => {
+				var imageStr = text;
+				console.log(base64Flag + imageStr);
+				this.setState({
+					finishedMask: true,
+					extractPhoto: base64Flag + imageStr,
+				});
+			});
+		});
+	};
+	_handleSubmit_extractedges = () => {
+		// TODO: do something with -> this.state.file
+		let { extractPhoto } = this.state;
+		let img_car = encodeURIComponent(extractPhoto);
+		let url = 'http://127.0.0.1:4000/extractedges?data=' + img_car;
+		fetch(url).then(response => {
+			var base64Flag = 'data:image/jpeg;base64,';
+			let body = response.text().then(text => {
+				var imageStr = text;
+				console.log(base64Flag + imageStr);
+				this.setState({
+					finishedEdge: true,
+					edgeImagePhoto: base64Flag + imageStr,
+				});
+			});
+		});
+	};
 
-  _handleConver = () => {
-	let {imagePreviewUrl} = this.state;
-	 //let url = MASK_ENDPOINT+"?data="+imagePreviewUrl
-	let img = encodeURIComponent(imagePreviewUrl)
-	let url = "http://127.0.0.1:4000/extract_mask?data="+img
-	fetch(url).then((response) => {
-		 var base64Flag = 'data:image/jpeg;base64,';
-		 let  body = response.text().then((text) => {
-		 var imageStr = text
-		 console.log(base64Flag + imageStr)
-                 this.setState({finishedPhoto: true, maskPhoto: base64Flag + imageStr})
-		 });
-            });
-  }
-  _handleSubmit_applymask = () => {
-    
-    // TODO: do something with -> this.state.file
-        let {imagePreviewUrl, maskPhoto} = this.state;
-	let img_orig = encodeURIComponent(imagePreviewUrl)
-	let img_mask = encodeURIComponent(maskPhoto)
-	let url = "http://127.0.0.1:4000/apply_mask?orig="+img_orig+"&mask="+img_mask
-	fetch(url).then((response) => {
-		 var base64Flag = 'data:image/jpeg;base64,';
-		 let  body = response.text().then((text) => {
-		 var imageStr = text
-		 console.log(base64Flag + imageStr)
-                 this.setState({finishedMask: true, extractPhoto: base64Flag + imageStr})
-		 });
-            });
-  }
-  _handleSubmit_extractedges = () => {
+	_handleSubmit_cardraw = () => {
+		// TODO: do something with -> this.state.file
+		let { edgeImagePhoto } = this.state;
+		let img_car = encodeURIComponent(edgeImagePhoto);
+		let url = 'http://127.0.0.1:4000/cardraw?data=' + img_car;
+		fetch(url).then(response => {
+			var base64Flag = 'data:image/jpeg;base64,';
+			let body = response.text().then(text => {
+				var imageStr = text;
+				console.log(base64Flag + imageStr);
+				this.setState({
+					finishedCar: true,
+					finalcarImagePhoto: base64Flag + imageStr,
+				});
+			});
+		});
+	};
+	render() {
+		let {
+			imagePreviewUrl,
+			finishedPhoto,
+			maskPhoto,
+			finishedMask,
+			extractPhoto,
+			finishedEdge,
+			edgeImagePhoto,
+			finishedCar,
+			finalcarImagePhoto,
+		} = this.state;
 
-    // TODO: do something with -> this.state.file
-        let {extractPhoto} = this.state;
-        let img_car = encodeURIComponent(extractPhoto)
-        let url = "http://127.0.0.1:4000/extractedges?data="+img_car
-        fetch(url).then((response) => {
-                 var base64Flag = 'data:image/jpeg;base64,';
-                 let  body = response.text().then((text) => {
-                 var imageStr = text
-                 console.log(base64Flag + imageStr)
-                 this.setState({finishedEdge: true, edgeImagePhoto: base64Flag + imageStr})
-                 });
-            });
-  }
+		let $imagePreview = null;
+		let newPhoto = null;
+		let applyMaskPhoto = null;
+		let edgesPhoto = null;
+		let finalcarPhoto = null;
 
-  _handleSubmit_cardraw = () => {
-
-    // TODO: do something with -> this.state.file
-        let {edgeImagePhoto} = this.state;
-        let img_car = encodeURIComponent(edgeImagePhoto)
-        let url = "http://127.0.0.1:4000/cardraw?data="+img_car
-        fetch(url).then((response) => {
-                 var base64Flag = 'data:image/jpeg;base64,';
-                 let  body = response.text().then((text) => {
-                 var imageStr = text
-                 console.log(base64Flag + imageStr)
-                 this.setState({finishedCar: true, finalcarImagePhoto: base64Flag + imageStr})
-                 });
-            });
-  }
-  render() {
-    let {imagePreviewUrl,
-	 finishedPhoto, 
-	 maskPhoto,
-	 finishedMask, 
-	 extractPhoto,
-	 finishedEdge,
-	 edgeImagePhoto,
-         finishedCar,
-         finalcarImagePhoto} = this.state;
-
-    let $imagePreview = null;
-    let newPhoto = null;
-    let applyMaskPhoto = null;
-    let edgesPhoto = null;
-    let finalcarPhoto = null;
-
-    if (imagePreviewUrl) {
-      $imagePreview = (<img className={'imagen1'} src={imagePreviewUrl} />);
-    } else {
-      $imagePreview = (<div className="previewText">Please select an Image for Preview</div>);
-    }
-    if(finishedPhoto) {
-      newPhoto = (<img className={'imagen1'} src={maskPhoto} />);
-    }else {
-      newPhoto = (<div className="previewText">No Result yet</div>);
-    }
-    if(finishedMask){
-      applyMaskPhoto = (<img className={'imagen1'} src={extractPhoto} />);
-    }else{
-      applyMaskPhoto = (<div className="previewText">No Result yet</div>);
-    }
-    if(finishedEdge){
-      edgesPhoto = (<img className={'imagen1'} src={edgeImagePhoto} />);
-    }else{
-      edgesPhoto = (<div className="previewText">No Result yet</div>);
-    }
-    if(finishedCar){
-      finalcarPhoto = (<img className={'imagen1'} src={finalcarImagePhoto} />);
-    }else{
-      finalcarPhoto = (<div className="previewText">No Result yet</div>);
-    }
-    return (
-      <div>
-      <div className="previewComponent">
-        <form onSubmit={(e)=>this._handleSubmit(e)}>
-          <input className="fileInput" 
-            type="file" 
-            onChange={(e)=>this._handleImageChange(e)} />
-          <button className="submitButton" 
-            type="submit" 
-            onClick={(e)=>this._handleSubmit(e)}>Upload Image</button>
-        </form>
-        <div className = {'imagenesDiv'}>
-          <div className="imgPreview">
-            {$imagePreview}
-          </div>
-          <button  onClick={(e)=>this._handleConver(e)}>
-            hola
-          </button>
-          <div className="imgPreview">
-            {newPhoto}
-          </div>
-        </div>
-      </div>
-      <div className="App-apply-mask">
-        <h2>Apply mask to original Car</h2>
-          <div className="imgPreview">
-            {newPhoto}
-          </div>
-          <button  onClick={(e)=>this._handleSubmit_applymask(e)}>
-            hola-2
-          </button>
-          <div className="imgPreview">
-            {applyMaskPhoto}
-          </div>
-      </div>
-      <div className="App-apply-mask">
-        <h2>Extract edges with Cv2 canyedge detection</h2>
-          <div className="imgPreview">
-            {applyMaskPhoto}
-          </div>
-          <button  onClick={(e)=>this._handleSubmit_extractedges(e)}>
-            hola-3
-          </button>
-          <div className="imgPreview">
-            {edgesPhoto}
-          </div>
-      </div>
-       <div className="App-apply-mask">
-        <h2>DRAW CAR!</h2>
-          <div className="imgPreview">
-            {edgesPhoto}
-          </div>
-          <button  onClick={(e)=>this._handleSubmit_cardraw(e)}>
-            hola-4
-          </button>
-          <div className="imgPreview">
-            {finalcarPhoto}
-          </div>
-      </div>
-
-      </div>
-    )
-  }
+		if (imagePreviewUrl) {
+			$imagePreview = <img className={'imagen1'} src={imagePreviewUrl} />;
+		} else {
+			$imagePreview = (
+				<div className="previewText">Please select an Image for Preview</div>
+			);
+		}
+		if (finishedPhoto) {
+			newPhoto = <img className={'imagen1'} src={maskPhoto} />;
+		} else {
+			newPhoto = <div className="previewText">No Result yet</div>;
+		}
+		if (finishedMask) {
+			applyMaskPhoto = <img className={'imagen1'} src={extractPhoto} />;
+		} else {
+			applyMaskPhoto = <div className="previewText">No Result yet</div>;
+		}
+		if (finishedEdge) {
+			edgesPhoto = <img className={'imagen1'} src={edgeImagePhoto} />;
+		} else {
+			edgesPhoto = <div className="previewText">No Result yet</div>;
+		}
+		if (finishedCar) {
+			finalcarPhoto = <img className={'imagen1'} src={finalcarImagePhoto} />;
+		} else {
+			finalcarPhoto = <div className="previewText">No Result yet</div>;
+		}
+		return (
+			<div>
+				<div className="previewComponent">
+					<form onSubmit={e => this._handleSubmit(e)}>
+						<input
+							className="fileInput"
+							type="file"
+							onChange={e => this._handleImageChange(e)}
+						/>
+						<button
+							className="submitButton"
+							type="submit"
+							onClick={e => this._handleSubmit(e)}>
+							Upload Image
+						</button>
+					</form>
+					<div className={'imagenesDiv'}>
+						<div className="imgPreview">{$imagePreview}</div>
+						<button onClick={e => this._handleConver(e)}>hola</button>
+						<div className="imgPreview">{newPhoto}</div>
+					</div>
+				</div>
+				<div className="App-apply-mask">
+					<div className={'maskTitle'}>
+						<h2>Apply mask to original Car</h2>
+					</div>
+					<div className={'maskImgs'}>
+						<div className="imgPreview">{newPhoto}</div>
+						<button
+							className={'ButtonConvert'}
+							onClick={e => this._handleSubmit_applymask(e)}>
+							hola-2
+						</button>
+						<div className="imgPreview">{applyMaskPhoto}</div>
+					</div>
+				</div>
+				<div className="App-apply-mask">
+					<div>
+						<h2>Extract edges with Cv2 canyedge detection</h2>
+					</div>
+					<div className={'maskImgs'}>
+						<div className="imgPreview">{applyMaskPhoto}</div>
+						<button
+							className={'ButtonConvert'}
+							onClick={e => this._handleSubmit_extractedges(e)}>
+							hola-3
+						</button>
+					</div>
+					<div className="imgPreview">{edgesPhoto}</div>
+				</div>
+				<div className="App-apply-mask">
+					<div>
+						<h2>DRAW CAR!</h2>
+					</div>
+					<div className={'maskImgs'}>
+						<div className="imgPreview">{edgesPhoto}</div>
+						<button
+							className={'ButtonConvert'}
+							onClick={e => this._handleSubmit_cardraw(e)}>
+							hola-4
+						</button>
+						<div className="imgPreview">{finalcarPhoto}</div>
+					</div>
+				</div>
+			</div>
+		);
+	}
 }
-  
+
 export default ImageUpload;
