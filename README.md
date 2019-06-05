@@ -162,7 +162,7 @@ Este es el modelo presentado en el frontend
 `sudo ./run`
 
 
-ENJOY UPLOADING YOUR CARS!
+ACCESS TO http://127.0.0.1:3000/ AND ENJOY UPLOADING YOUR CARS!
 
 ![Enjoy](resources/final1.png)
 
