@@ -55,7 +55,9 @@ Fichero3(500MB).-[Intel Image Classification](https://www.kaggle.com/puneet6060/
 
  7. Prepare carvana image masking dataset 
 
-`unzip downloads/carvana-image-masking-challenge.zip -d input/carvana-image-masking-challenge sudo unzip input/carvana-image-masking-challenge/train.zip -d input/carvana-image-masking-challenge/`
+`unzip downloads/carvana-image-masking-challenge.zip -d input/carvana-image-masking-challenge`
+
+`sudo unzip input/carvana-image-masking-challenge/train.zip -d input/carvana-image-masking-challenge/`
 
 `sudo unzip input/carvana-image-masking-challenge/train_masks.zip -d input/carvana-image-masking-challenge/`
 
