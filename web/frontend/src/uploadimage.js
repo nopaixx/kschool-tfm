@@ -164,7 +164,7 @@ class ImageUpload extends React.Component {
 					</form>
 					<div className={'imagenesDiv'}>
 						<div className="imgPreview">{$imagePreview}</div>
-						<button onClick={e => this._handleConver(e)}>hola</button>
+						<button onClick={e => this._handleConver(e)}>mascara--></button>
 						<div className="imgPreview">{newPhoto}</div>
 					</div>
 				</div>
@@ -177,7 +177,7 @@ class ImageUpload extends React.Component {
 						<button
 							className={'ButtonConvert'}
 							onClick={e => this._handleSubmit_applymask(e)}>
-							hola-2
+							apply masK-->
 						</button>
 						<div className="imgPreview">{applyMaskPhoto}</div>
 					</div>
@@ -191,7 +191,7 @@ class ImageUpload extends React.Component {
 						<button
 							className={'ButtonConvert'}
 							onClick={e => this._handleSubmit_extractedges(e)}>
-							hola-3
+							Edges-->
 						</button>
 						<div className="imgPreview">{edgesPhoto}</div>
 					</div>
@@ -205,7 +205,7 @@ class ImageUpload extends React.Component {
 						<button
 							className={'ButtonConvert'}
 							onClick={e => this._handleSubmit_cardraw(e)}>
-							hola-4
+							DRAW!-->
 						</button>
 						<div className="imgPreview">{finalcarPhoto}</div>
 					</div>
