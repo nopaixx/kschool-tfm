@@ -84,7 +84,35 @@ Pasos Para la augmentacion:
 
  
 
-## Model 2.-
+## Model 2.- Canny Edge + Car generator Model
+
+En este punto, el objetivo es el siguiente:
+
+ 1. Usar el Model 1 y extraer el coche
+ 2. Aplicar algoritmo de canny edge detection para extraer los trazos del coche
+ 3. Entrenar un modelo capaz de regenerar el coche a su original partiendo como parametro de entrada los trazo del coche
+
+
+Arquitecturas trabajadas en modo exploración
+
+ 1. Cycle GAN 
+
+Codigo Original.-[Cycle GAN](https://github.com/eriklindernoren/Keras-GAN/tree/master/cyclegan)
+
+ 2. PixToPix
+
+Codigo Original.-[PixToPix](https://github.com/eriklindernoren/Keras-GAN/tree/master/pix2pix)
+
+ 3. DiscoGAN
+
+Codigo Original.-[DiscoGAN](https://github.com/eriklindernoren/Keras-GAN/tree/master/discogan)
+
+ 4. Unet
+
+ 5. Unet + Custom improvement, Dos Unet (edge+avg color car) Join (modelo presentado en el frontend)
+
+
+
 ## Rename a file
 
 You can rename the current file by clicking the file name in the navigation bar or by clicking the **Rename** button in the file explorer.
